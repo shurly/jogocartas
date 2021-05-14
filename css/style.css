@@ -1,0 +1,44 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.container{
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+  
+}
+p{
+    font-weight: bold;
+}
+
+img{
+    max-width: 100%;
+}
+
+ .carts{
+    max-width: 160px;
+}
+
+ .cart{
+    max-width: 145px;
+}
+
+ .line{
+    height: 10em;
+}
+
+
+.title{
+    color: #111;
+    text-transform: uppercase;
+    margin: 50px 0;
+    text-align: center;
+    color: crimson;
+}
+
+.active img{
+    background: rgb(159, 247, 76);
+}
+
