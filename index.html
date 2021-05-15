@@ -18,12 +18,14 @@
             <div :class="['col-6', playerSelected == 1 ? 'active' : '']">
                 <img src="assets/player1.png" alt="Jogador 1" >
                 <p>Jogador 1</p>
+                <span class="badge badge-default">{{ player1.historic.length }}</span>
                 <p><strong>Pontos: </strong>{{ player1.points}}</p>
             </div>
 
             <div :class="['col-6', playerSelected == 2 ? 'active' : '']">
                 <img src="assets/player2.png" alt="Jogador 2">
                 <p>Jogador 2</p>
+                <span class="badge badge-default">{{ player2.historic.length }}</span>
                 <p><strong>Pontos: </strong>{{ player2.points}}</p>
             </div>
        </div>
@@ -32,13 +34,13 @@
            <img src="assets/linha.png" alt="linha divisória" class="line">
        </div>
 
-       <div class="controls col">
-            <a href="#" class="btn btn-success" @click.prevent="changePlayer">Pular a vez</a>
-            <a href="" class="btn btn-primary">Zerar</a>
-            <a href="" class="btn btn-danger">Finalizar</a>
+       <div class="controls col-12">
+            <a href="#" class="btn btn-success" @click.prevent="changePlayer">Passar</a>
+            <a href="#" class="btn btn-danger" @click.prevent="finish">Finalizar</a>
+            <a href="#" class="btn btn-primary" @click.prevent="reset">Zerar</a>
        </div>
 
-       <div class="row">
+       <div class="row game">
            <div class="col-6">
                <a href="#" @click.prevent="selectedCarts">
                    <img src="assets/baralho-cartas.png" alt="Carta virada" class="carts">
@@ -63,10 +65,12 @@
                 playerSelected: 1,
 
                 player1: {
-                    points:0
+                    points:0,
+                    historic: []
                 },
                 player2: {
-                    points:0
+                    points:0,
+                    historic: []
                 },
 
                 cartSelected: ''
@@ -74,15 +78,58 @@
             methods: {
                 changePlayer () {
                     this.playerSelected = this.playerSelected == 1 ? 2 : 1
+
+                    this.cartSelected = ''
                 },
 
                 selectedCarts () {
                    this.cartSelected = Math.floor((Math.random() * 13) + 1)
-                    if(this.playerSelected == 1)
-                    this.player1.points += this.cartSelected
 
-                    if(this.playerSelected == 2)
+                    if(this.playerSelected == 1){
+                        this.player1.points += this.cartSelected
+
+                        this.player1.historic.push(this.cartSelected)
+                    }
+                    
+
+                    if(this.playerSelected == 2){
                     this.player2.points += this.cartSelected
+
+                    this.player2.historic.push(this.cartSelected)
+                    }
+
+                    if(this.player1.points >= 21 || this.player2.points >= 21)
+                    this.finish()
+                },
+                finish () {
+                    if(this.player1.points <= 21 && this.player1.points >  this.player2.points)
+                        alert('Jogador 1 ganhou!')
+
+                   else if(this.player2.points <= 21 && this.player2.points >  this.player1.points)
+                        alert('Jogador 2 ganhou!')
+
+                    else if(this.player1.points > 21)
+                        alert('Jogador 2 ganhou!')
+
+                    else if(this.player2.points > 21)
+                        alert('Jogador 1 ganhou!')
+
+                    else
+                        alert('Empatou')
+
+                        let x = this
+                        setTimeout(function(){
+                            x.reset()
+                        }, 3000) 
+
+                },
+                reset () {
+                    this.player1.points = 0
+                    this.player2.points = 0
+                    this.cartSelected = ''
+                    this.playerSelected = 1
+                    this.player1.historic = []
+                    this.player2.historic = []
                 }
             }
         })
